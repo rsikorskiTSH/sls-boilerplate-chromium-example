@@ -2,5 +2,6 @@ chromium-custom-layer:
   handler: functions/chromium-custom-layer/handler.handle
   vpc: ${self:custom.vpc}
   memorySize: 512 ## atleast 512 is recommended
+  timeout: 900
   layers:
     - !Ref ChromiumLambdaLayer ## CloudFormation is saving layers in TitleCase pattern ${layerName}LambdaLayer

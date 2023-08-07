@@ -33,12 +33,24 @@ npm run plop
 
 ##
 
-###
+### Emulating chromium
 use 
 ```
 npm run get-latest-chromium
 ```
 to create chromium layer which will be referenced in serverless.yml
+
+make sure that "@sparticuz/chromium"
+is added on webpack configuration as external dependency
+
+example lambda event: 
+```
+{
+  "jsCode": "const descriptionElement = document.querySelector('meta[name=\"description\"]');\nconst description = descriptionElement ? descriptionElement.getAttribute('content') : null;\ndescription;",
+  "url": "https://tsh.io"
+}
+
+```
 
 
 ### Development Local
