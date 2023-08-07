@@ -33,6 +33,14 @@ npm run plop
 
 ##
 
+###
+use 
+```
+npm run get-latest-chromium
+```
+to create chromium layer which will be referenced in serverless.yml
+
+
 ### Development Local
 
 - npm install

@@ -1,9 +1,0 @@
-Comment: "Example Workflow"
-StartAt: exampleStep
-States:
-  exampleStep:
-    Type: Task
-    Resource: !GetAtt example-step-lambda.Arn
-    TimeoutSeconds: 28
-    End: true
-  # PLOP_ADD_WORKFLOW_STEP

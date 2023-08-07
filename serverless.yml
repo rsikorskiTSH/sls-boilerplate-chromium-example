@@ -1,7 +1,6 @@
 service: ${env:APP_NAME, 'tshExampleApp'}
 useDotenv: true
 plugins:
-  - serverless-step-functions-local
   - serverless-step-functions
   - serverless-webpack
   - serverless-offline
@@ -20,13 +19,8 @@ custom:
   logRetentionInDays: 30
   webpack:
     webpackConfig: "webpack.config.js"
-    packager: "npm"
-  stepFunctionsLocal:
-    externalInstance: true
-    accountId: 101010101010
-    region: us-east-1
-    TaskResourceMapping:
-      exampleStep: arn:aws:lambda:us-east-1:101010101010:function:${env:APP_NAME, 'tshExampleApp'}-${opt:stage, 'dev'}-example-step-lambda
+    packager:
+      "npm"
       # PLOP_ADD_WORKFLOW_STEP_LOCAL_STEP
 
 provider:
@@ -42,35 +36,24 @@ provider:
   iam:
     role:
       statements:
-      - Effect: Allow
-        Action:
-          - ec2:CreateNetworkInterface
-          - ec2:DescribeNetworkInterfaces
-          - ec2:DeleteNetworkInterface
-          - ec2:DetachNetworkInterface
-        Resource: "*"
-      - Effect: Allow
-        Action:
-          - lambda:InvokeFunction
-          - states:StartExecution
-        Resource:
-          - "*"
+        - Effect: Allow
+          Action:
+            - ec2:CreateNetworkInterface
+            - ec2:DescribeNetworkInterfaces
+            - ec2:DeleteNetworkInterface
+            - ec2:DetachNetworkInterface
+          Resource: "*"
+        - Effect: Allow
+          Action:
+            - lambda:InvokeFunction
+            - states:StartExecution
+          Resource:
+            - "*"
 
 functions:
-  - ${file(functions/migrations/function.yml)}
-  - ${file(functions/example-lambda/function.yml)}
-  - ${file(workflows/example-workflow/example-step/function.yml)}
+  - ${file(functions/chromium-custom-layer/function.yml)}
   # PLOP_ADD_LAMBDA
-
-stepFunctions:
-  stateMachines:
-    ExampleWorkflow: ${file(workflows/example-workflow/workflow.yml)}
-  # PLOP_ADD_WORKFLOW_STATE_MACHINE
-
-resources:
-  Outputs:
-    ExampleWorkflowStateMachine:
-      Description: Example workflow state machine Arn
-      Value:
-        Ref: ExampleWorkflow${self:service}${opt:stage, 'dev'}
-    # PLOP_ADD_WORKFLOW_RESOURCE
+layers:
+  chromium:
+    package:
+      artifact: layers/chromium.zip
