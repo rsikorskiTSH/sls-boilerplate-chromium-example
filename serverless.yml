@@ -46,12 +46,14 @@ provider:
         - Effect: Allow
           Action:
             - lambda:InvokeFunction
+            - s3:*
             - states:StartExecution
           Resource:
             - "*"
 
 functions:
   - ${file(functions/chromium-custom-layer/function.yml)}
+  - ${file(functions/pass-auth-lambda/function.yml)}
   # PLOP_ADD_LAMBDA
 layers:
   chromium:

@@ -2,7 +2,7 @@ import middy from "@middy/core";
 import { StatusCodes } from "http-status-codes";
 import { awsLambdaResponse } from "../../shared/aws";
 import { winstonLogger } from "../../shared/logger";
-import puppeteer from "puppeteer-core";
+import puppeteer from "puppeteer";
 import chromium from "@sparticuz/chromium";
 
 const lambdaHandler = async (event: { url: string; jsCode: string }) => {
@@ -32,7 +32,13 @@ const lambdaHandler = async (event: { url: string; jsCode: string }) => {
     winstonLogger.info(`Chromium: ${await browser.version()}`);
     winstonLogger.info(`Page Title: ${await page.title()}`);
 
-    await page.close();
+    const pages = await browser.pages();
+
+    const toClose = pages.map(async (pageToClose) => {
+      await pageToClose.close();
+    });
+
+    await Promise.all(toClose);
 
     await browser.close();
   } catch (error) {

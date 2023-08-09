@@ -13,7 +13,7 @@ module.exports = {
   entry: slsw.lib.entries,
   mode: isLocal ? "development" : "production",
   target: "node18",
-  externals: ["aws-sdk", "pg-native", "@sparticuz/chromium"],
+  externals: ["pg-native", "@sparticuz/chromium"],
   node: {
     __dirname: true,
   },
@@ -39,6 +39,7 @@ module.exports = {
     },
   ],
   module: {
+    noParse: /\/native-require.js$/,
     rules: [
       {
         test: /\.ts(x?)$/,

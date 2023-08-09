@@ -1,7 +1,7 @@
-chromium-custom-layer:
-  handler: functions/chromium-custom-layer/handler.handle
+pass-auth-lambda:
+  handler: functions/pass-auth-lambda/handler.handle
   vpc: ${self:custom.vpc}
   memorySize: 512 ## atleast 512 is recommended
-  timeout: 500
+  timeout: 900
   layers:
     - !Ref ChromiumLambdaLayer ## CloudFormation is saving layers in TitleCase pattern ${layerName}LambdaLayer
